@@ -12,13 +12,17 @@ and display them in React.
 
 ## Tools
 • React
-• PHP
-• MySQL
+• PHP (using Apache service from XAMPP)
+• MySQL (using XAMPP)
 • HTML
 • CSS
 
 ## Instructions
-To run the front-end website,
+To run the back-end:
+- Clone this repository into 'C:\xampp\htdocs\'.
+- Start Apache and MySQL in XAMPP.
+- Run SQL
+To run the front-end:
 - navigate to the frontend folder
 - in the terminal type "npm run dev".
 - open [localhost](http://localhost:5173/)
