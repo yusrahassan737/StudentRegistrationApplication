@@ -11,9 +11,10 @@ Retrieve all students from the database
 and display them in React.
 
 ## Tools
-• React
-• PHP (using Apache service from XAMPP)
-• MySQL (using XAMPP)
+• XAMPP
+• React (Vite)
+• PHP
+• MySQL
 • HTML
 • CSS
 
@@ -22,6 +23,7 @@ To run the back-end:
 - Clone this repository into 'C:\xampp\htdocs\'.
 - Start Apache and MySQL in XAMPP.
 - Run SQL
+
 To run the front-end:
 - navigate to the frontend folder
 - in the terminal type "npm run dev".
