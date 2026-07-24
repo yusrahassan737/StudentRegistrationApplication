@@ -1,53 +1,188 @@
-export default function StudentForm() {
-  return <div>
-            <h2>Student Registration</h2>
+import { useState } from "react";
 
-            <form action="http://localhost/Assignment%202/backend/register.php" method="post">
+const BACKEND_URL = "http://localhost/Assignment%202/backend/register.php";
 
-                <p>First Name</p>
+export default function StudentForm(){
+    // registration states
+    const [first_name, setFirstName] = useState("");
+    const [last_name, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [program, setProgram] = useState("");
+
+    // error checking states
+    const [registered, setRegistered] = useState(false);
+    const [error, setError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [serverError, setServerError] = useState(false);
+
+    // handle changes - first_name, last_name, email, program
+    // Handling the name change
+    const handleFirstName = (e) => {
+        setFirstName(e.target.value);
+        setRegistered(false);
+    };
+
+    const handleLastName = (e) => {
+        setLastName(e.target.value);
+        setRegistered(false);
+    };
+
+    // Handling the email change
+    const handleEmail = (e) => {
+        setEmail(e.target.value);
+        setRegistered(false);
+    };
+
+    // Handling the program change
+    const handleProgram = (e) => {
+        setProgram(e.target.value);
+        setRegistered(false);
+    };
+
+    // Handling the student registration
+    const handleRegistered = (e) => {
+    e.preventDefault();
+    if (first_name === "" || last_name === "" || email === "" || program === "") {
+        setError(true);
+        setEmailError(false);
+        setServerError(false);
+        setRegistered(false);
+
+    } else if (!email.includes("@")) {
+        setEmailError(true);
+        setError(false);
+        setServerError(false);
+        setRegistered(false);
+    } 
+
+    setError(false);
+    setEmailError(false);
+
+    try {
+        const response = await fetch(BACKEND_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                firstName: first_name,
+                lastName: last_name,
+                email: email,
+                program: program,
+            }),
+        });
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+            setRegistered(true);
+            setServerError(false);
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setProgram("");
+        } else {
+            setServerError(true);
+            setRegistered(false);
+        }
+    } catch (err) {
+        console.error("Error submitting form:", err);
+        setServerError(true);
+        setRegistered(false);
+    }
+};
+
+
+
+    // Showing success message
+    const successMessage = () => {
+         return (
+            <div
+                className="success"
+                style={{
+                    display: registered ? "" : "none",
+                }}
+            >
+                <h1>User {first_name} {last_name} has been successfully registered!!</h1>
+            </div>
+        );
+    };
+
+    // Showing error message if error is true
+    const errorMessage = () => {
+        return (
+            <div className="error" style={{ display: error ? "" : "none" }}>
+                <h1>Please enter all the fields</h1>
+            </div>
+        );
+    };
+
+    const emailErrorMessage = () => {
+        return (
+            <div className="error" style={{ display: emailError ? "" : "none" }}>
+                <h1>Please enter a valid email address</h1>
+            </div>
+        );
+    };
+
+    const serverErrorMessage = () => {
+        return (
+            <div className="error" style={{ display: serverError ? "" : "none" }}>
+                <h1>Something went wrong. Please try again.</h1>
+            </div>
+        );
+    };
+
+
+    return (
+        <div className="form">
+            <div>
+                <h1>Student Registration</h1>
+            </div>
+
+            {/* Calling to the methods */}
+            <div className="messages">
+                {emailErrorMessage()}
+                {errorMessage()}
+                {serverErrorMessage()}
+                {successMessage()}
+            </div>
+
+            <form>
+                <label className="label">First Name</label>
                 <input
+                    onChange={handleFirstName}
+                    className="input"
+                    value={first_name}
                     type="text"
-                    name="firstName"
-                    required
                 />
 
-                <br/><br/>
-
-                <p>Last Name</p>
+                <label className="label">Last Name</label>
                 <input
+                    onChange={handleLastName}
+                    className="input"
+                    value={last_name}
                     type="text"
-                    name="lastName"
-                    required
                 />
 
-                <br/><br/>
-
-                <p>Email</p>
-
+                <label className="label">Email</label>
                 <input
+                    onChange={handleEmail}
+                    className="input"
+                    value={email}
                     type="email"
-                    name="email"
-                    required
                 />
 
-                <br/><br/>
-
-                <p>Program</p>
-
+                <label className="label">Program</label>
                 <input
+                    onChange={handleProgram}
+                    className="input"
+                    value={program}
                     type="text"
-                    name="program"
-                    required
                 />
 
-                <br/><br/>
-
-                <input
-                    type="submit"
-                    value="Register Student"
-                />
-
+                <button onClick={handleRegistered} className="btn" type="submit">
+                    Register
+                </button>
             </form>
-
         </div>
+    );
 }
