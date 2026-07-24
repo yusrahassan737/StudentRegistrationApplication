@@ -17,7 +17,6 @@ function App() {
       </nav>
       <main>
         <Header />
-        <h1>Hello World</h1>
         {currentPage === 'register' && <StudentForm />}
         {currentPage === 'display' && <StudentList />}
         <Footer />
