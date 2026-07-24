@@ -9,8 +9,7 @@ $database = "college";
 $conn = mysqli_connect($server, $username, $password, $database);
 
 // Check connection
-if (!$conn)
-{
+if (!$conn) {
     die("Database Connection Failed!");
 }
 
@@ -20,23 +19,28 @@ $lastName = $_POST["lastName"];
 $email = $_POST["email"];
 $program = $_POST["program"];
 
-// SQL statement
-$sql = "INSERT INTO students(firstName, lastName, program, email)
-        VALUES('$firstName', '$lastName','$program','$email')";
+// Perform validation again
+header('Content-Type: application/json');
+if (!empty($firstName) && ctype_alpha($firstName) && !empty($lastName) && ctype_alpha($lastName) && !empty($email) && !empty($program) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // SQL statement
+    $sql = "INSERT INTO students(firstName, lastName, program, email)
+            VALUES('$firstName', '$lastName','$program','$email')";
 
-// Execute SQL
-$result = mysqli_query($conn, $sql);
+    // Execute SQL
+    $result = mysqli_query($conn, $sql);
 
-// Check if successful
-if ($result) {
-    header('Content-Type: application/json');
-    exit('{"status":"success"}');
-}
-else {
-    echo "Registration Failed!";
-    header('Content-Type: application/json');
-    exit('{"status":"error"}');
-}
+    // Check if successful
+    if ($result) {
+        echo json_encode(["status" => "success"]);
+    }
+    else {
+        echo json_encode(["status" => "error"]);
+        exit;
+    }
+} else {
+        echo json_encode(["status" => "error"]);
+        exit;
+    }
 
 // Close database connection
 mysqli_close($conn);
