@@ -2,12 +2,12 @@ export default function StudentForm() {
   return <div>
             <h2>Student Registration</h2>
 
-            <form action="../backend/register.php" method="post">
+            <form action="http://localhost/Assignment%202/backend/register.php" method="post">
 
                 <p>First Name</p>
                 <input
                     type="text"
-                    name="firstname"
+                    name="firstName"
                     required
                 />
 
@@ -16,7 +16,7 @@ export default function StudentForm() {
                 <p>Last Name</p>
                 <input
                     type="text"
-                    name="lastname"
+                    name="lastName"
                     required
                 />
 
