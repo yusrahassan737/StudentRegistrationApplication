@@ -202,3 +202,22 @@ main {
   color: #888;
   font-size: 0.85rem;
 }
+
+.directory {
+  width: 100%;
+  max-width: 640px;
+}
+
+.directory h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.note {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}

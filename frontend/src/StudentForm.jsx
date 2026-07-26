@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const BACKEND_URL = "http://localhost/StudentRegistrationApplication/backend/register.php";
+
 export default function StudentForm(){
     // registration states
     const [first_name, setFirstName] = useState("");
