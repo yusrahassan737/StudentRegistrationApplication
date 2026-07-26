@@ -1,3 +1,8 @@
 export default function Header() {
-  return <div>Header</div>
+    return (
+        <header className="site-header">
+            <h1>Example College</h1>
+            <p>Student Registration Portal</p>
+        </header>
+    );
 }

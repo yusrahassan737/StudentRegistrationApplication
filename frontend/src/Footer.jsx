@@ -1,3 +1,7 @@
 export default function Footer() {
-  return <div>Footer</div>
+    return (
+        <footer className="site-footer">
+            <p>&copy; CP476 Assignment 2. All rights reserved.</p>
+        </footer>
+    );
 }
