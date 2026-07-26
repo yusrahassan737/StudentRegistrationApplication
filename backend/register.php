@@ -13,14 +13,19 @@ if (!$conn) {
     die("Database Connection Failed!");
 }
 
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+
+// Read JSON body sent from React 
+$data = json_decode(file_get_contents('php://input'), true);
+
 // Read values sent from the HTML form
-$firstName = $_POST["firstName"];
-$lastName = $_POST["lastName"];
-$email = $_POST["email"];
-$program = $_POST["program"];
+$firstName = $data['firstName'] ?? '';
+$lastName  = $data['lastName'] ?? '';
+$email     = $data['email'] ?? '';
+$program   = $data['program'] ?? '';
 
 // Perform validation again
-header('Content-Type: application/json');
 if (!empty($firstName) && ctype_alpha($firstName) && !empty($lastName) && ctype_alpha($lastName) && !empty($email) && !empty($program) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
     // SQL statement
     $sql = "INSERT INTO students(firstName, lastName, program, email)

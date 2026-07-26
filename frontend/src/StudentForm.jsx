@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-const BACKEND_URL = "http://localhost/Assignment%202/backend/register.php";
-
 export default function StudentForm(){
     // registration states
     const [first_name, setFirstName] = useState("");
@@ -40,68 +38,65 @@ export default function StudentForm(){
     };
 
     // Handling the student registration
-    const handleRegistered = (e) => {
-    e.preventDefault();
-    if (first_name === "" || last_name === "" || email === "" || program === "") {
-        setError(true);
-        setEmailError(false);
-        setServerError(false);
-        setRegistered(false);
+    const handleRegistered = async (e) => {
+        e.preventDefault();
 
-    } else if (!email.includes("@")) {
-        setEmailError(true);
-        setError(false);
-        setServerError(false);
-        setRegistered(false);
-    } 
-
-    setError(false);
-    setEmailError(false);
-
-    try {
-        const response = await fetch(BACKEND_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                firstName: first_name,
-                lastName: last_name,
-                email: email,
-                program: program,
-            }),
-        });
-
-        const result = await response.json();
-
-        if (result.status === "success") {
-            setRegistered(true);
+        if (first_name === "" || last_name === "" || email === "" || program === "") {
+            setError(true);
+            setEmailError(false);
             setServerError(false);
-            setFirstName("");
-            setLastName("");
-            setEmail("");
-            setProgram("");
-        } else {
+            setRegistered(false);
+            return;
+        }
+
+        if (!email.includes("@")) {
+            setEmailError(true);
+            setError(false);
+            setServerError(false);
+            setRegistered(false);
+            return;
+        }
+
+        setError(false);
+        setEmailError(false);
+
+        try {
+            const response = await fetch(BACKEND_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    firstName: first_name,
+                    lastName: last_name,
+                    email: email,
+                    program: program,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                setRegistered(true);
+                setServerError(false);
+                setFirstName("");
+                setLastName("");
+                setEmail("");
+                setProgram("");
+            } else {
+                setServerError(true);
+                setRegistered(false);
+                }
+            } catch (err) {
+            console.error("Error submitting form:", err);
             setServerError(true);
             setRegistered(false);
         }
-    } catch (err) {
-        console.error("Error submitting form:", err);
-        setServerError(true);
-        setRegistered(false);
-    }
-};
-
-
+    };
 
     // Showing success message
     const successMessage = () => {
          return (
-            <div
-                className="success"
-                style={{
-                    display: registered ? "" : "none",
-                }}
-            >
-                <h1>User {first_name} {last_name} has been successfully registered!!</h1>
+            <div className="success" style={{ display: registered ? "" : "none" }}>
+                <h1>User has been successfully registered!</h1>
             </div>
         );
     };
@@ -138,7 +133,6 @@ export default function StudentForm(){
                 <h1>Student Registration</h1>
             </div>
 
-            {/* Calling to the methods */}
             <div className="messages">
                 {emailErrorMessage()}
                 {errorMessage()}
@@ -148,36 +142,16 @@ export default function StudentForm(){
 
             <form>
                 <label className="label">First Name</label>
-                <input
-                    onChange={handleFirstName}
-                    className="input"
-                    value={first_name}
-                    type="text"
-                />
+                <input onChange={handleFirstName} className="input" value={first_name} type="text" />
 
                 <label className="label">Last Name</label>
-                <input
-                    onChange={handleLastName}
-                    className="input"
-                    value={last_name}
-                    type="text"
-                />
+                <input onChange={handleLastName} className="input" value={last_name} type="text" />
 
                 <label className="label">Email</label>
-                <input
-                    onChange={handleEmail}
-                    className="input"
-                    value={email}
-                    type="email"
-                />
+                <input onChange={handleEmail} className="input" value={email} type="email" />
 
                 <label className="label">Program</label>
-                <input
-                    onChange={handleProgram}
-                    className="input"
-                    value={program}
-                    type="text"
-                />
+                <input onChange={handleProgram} className="input" value={program} type="text" />
 
                 <button onClick={handleRegistered} className="btn" type="submit">
                     Register
